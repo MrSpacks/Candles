@@ -80,6 +80,7 @@ body {
 .slide {
   border-radius: 10px;
   height: 70vh;
+  max-width: 92vw;
 }
 .slider_titile {
   font-size: 100px;
