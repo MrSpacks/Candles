@@ -143,6 +143,13 @@ body {
 .price {
   font-size: 20px;
 }
+
+/* footer stiles */
+
+.footer_text {
+  margin: 5px;
+  font-size: 16px;
+}
 /*! Adaptive */
 
 @media (min-width: 320px) and (max-width: 1024px) {
