@@ -151,6 +151,12 @@ body {
   margin: 5px;
   font-size: 16px;
 }
+
+/* blog page styles */
+.blog_pdf {
+  width: 100%;
+  height: 65vh;
+}
 /*! Adaptive */
 
 @media (min-width: 320px) and (max-width: 1024px) {
