@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin panel</title>
+  </head>
+  <body style="padding: 10px">
+    <header style="display: flex; justify-content: space-around">
+      <h1>Sklad: Candles of your life</h1>
+      <button
+        style="
+          border: solid 1px black;
+          border-radius: 5px;
+          width: 100px;
+          height: 50px;
+        "
+        popovertarget="my-popover"
+      >
+        Přidat produkt
+      </button>
+    </header>
+    <main>
+      <div popover id="my-popover">
+        <form action="" style="display: flex; gap: 5px; flex-direction: column">
+          <label for="name_prod">Nazev produktu</label>
+          <input id="name_prod" type="text" />
+          <label for="caption_prod">popisek produktu</label>
+          <input placeholder="neco tam pisni" id="caption_prod" type="text" />
+          <label for="volume_prod">Objem</label>
+          <input placeholder="ml" type="number" id="volume_prod" />
+          <label for="img_prod">Přidat obrazek</label>
+          <input
+            placeholder="png nebo jpeg"
+            type="file"
+            id="img_prod"
+            accept="image/png, image/jpeg"
+          />
+          <label for="price_prod">Cena:</label>
+          <input placeholder="Kč" type="number" id="price_prod" />
+          <label for="active_prod">Aktivni?</label>
+          <input type="checkbox" id="active_prod" />
+          <label for="stock_prod">Kolik kusu?</label>
+          <input type="number" id="stock_prod" />
+          <button type="submit">Hotovo</button>
+        </form>
+      </div>
+      <div id="table_product" class="table_product"></div>
+
+      <div id="table_product">
+        <table style="width: 100%" border="1">
+          <thead>
+            <tr>
+              <th>Název</th>
+              <th>Popisek</th>
+              <th>Objem</th>
+              <th>Cena (Kč)</th>
+              <th>Kolik kusu</th>
+              <th>Aktivni</th>
+              <th>Smazat</th>
+            </tr>
+          </thead>
+          <tbody id="product_list"></tbody>
+        </table>
+      </div>
+    </main>
+    <script>
+      document
+        .querySelector("form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault(); // Предотвращает перезагрузку страницы
+
+          // Сбор данных с формы
+          const name = document.getElementById("name_prod").value;
+          const description = document.getElementById("caption_prod").value;
+          const volume = document.getElementById("volume_prod").value;
+          const price = document.getElementById("price_prod").value;
+          const active = document.getElementById("active_prod").checked;
+          const stock = document.getElementById("stock_prod").value;
+
+          // Извлечение файла изображения
+          const imageInput = document.getElementById("img_prod");
+          const imageFile = imageInput.files[0];
+
+          // Создание объекта FormData для отправки данных с файлом
+          const formData = new FormData();
+          formData.append("name", name);
+          formData.append("description", description);
+          formData.append("volume", volume);
+          formData.append("price", price);
+          formData.append("active", active);
+          formData.append("stock", stock);
+          formData.append("image", imageFile);
+
+          // Отправка данных на сервер
+          try {
+            const response = await fetch("http://localhost:3000/api/products", {
+              method: "POST",
+              body: formData,
+            });
+
+            if (!response.ok) throw new Error("Ошибка при добавлении продукта");
+
+            alert("Продукт добавлен успешно!");
+            fetchProducts(); // Обновляем список продуктов
+          } catch (error) {
+            console.error("Ошибка:", error);
+            alert("Не удалось добавить продукт");
+          }
+        });
+
+      // Функция для получения и отображения продуктов
+      async function fetchProducts() {
+        try {
+          const response = await fetch("http://localhost:3000/api/products");
+          const products = await response.json();
+
+          const productList = document.getElementById("product_list");
+          productList.innerHTML = ""; // Очистка таблицы перед выводом
+
+          products.forEach((product) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+        <td>${product.name}</td>
+        <td>${product.description}</td>
+        <td>${product.volume || "N/A"}</td>
+        <td>${product.price}</td>
+        <td>${product.stock || "N/A"}</td>
+        <td>
+          <input type="checkbox" ${product.active ? "checked" : ""} 
+          onchange="toggleProductActive(${product.id}, this.checked)" />
+        </td>
+        <td>
+          <button onclick="deleteProduct(${product.id})">❌</button>
+        </td>
+      `;
+            productList.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Ошибка при получении продуктов:", error);
+        }
+      }
+
+      // Функция для удаления продукта
+      async function deleteProduct(productId) {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/api/products/${productId}`,
+            {
+              method: "DELETE",
+            }
+          );
+          if (!response.ok) throw new Error("Ошибка при удалении продукта");
+          fetchProducts(); // Обновляем список продуктов после удаления
+        } catch (error) {
+          console.error("Ошибка:", error);
+        }
+      }
+
+      // Функция для изменения активности продукта
+      async function toggleProductActive(productId, isActive) {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/api/products/${productId}`,
+            {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ active: isActive }),
+            }
+          );
+          if (!response.ok)
+            throw new Error("Ошибка при изменении активности продукта");
+        } catch (error) {
+          console.error("Ошибка:", error);
+        }
+      }
+
+      // Запускаем функцию при загрузке страницы
+      window.onload = fetchProducts;
+    </script>
+  </body>
+</html>
