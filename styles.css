@@ -122,16 +122,25 @@ body {
 }
 .card_cart {
   width: 20px;
-  transition: 0.3s;
 }
-.card_cart:hover {
-  background-color: greenyellow;
-}
+
 .card_line {
   width: 100%;
   height: 1px;
   background-color: black;
   margin: 10px 0;
+}
+.card_plus {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  transition: 0.3s;
+  border-radius: 5px;
+  padding: 5px;
+  border: solid 1px black;
+}
+.card_plus:hover {
+  background-color: greenyellow;
 }
 .card_content {
   width: 100%;
@@ -141,7 +150,9 @@ body {
   justify-content: space-between;
 }
 .card_footer {
-  margin-top: 20px;
+  margin-top: 10px;
+  text-align: center;
+  align-items: center;
 }
 .price {
   font-size: 20px;
