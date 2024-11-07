@@ -13,7 +13,7 @@
         <div class="header_cont">
           <img class="logo" src="./img/Logo.svg" alt="Logo" />
           <nav class="nav_items">
-            <a href="#shop" class="nav_item">Obchod</a>
+            <a href="#product_cards" class="nav_item">Obchod</a>
             <a href="./about.html" class="nav_item">O nas</a>
             <a href="./blog.html" class="nav_item">Blog</a>
             <a href="./contact.html" class="nav_item">Kontakty</a>
@@ -54,167 +54,67 @@
       <div class="line"></div>
       <!-- shop -->
       <div class="container">
-        <div id="shop" class="shop_conteiner">
-          <!-- card start -->
-          <div class="card">
-            <img src="./img/slider_img/1.jpeg" alt="" class="card_img" />
-            <div class="card_content">
-              <div class="card_top">
-                <h3 class="card_title">Nazev produktu</h3>
-                <div class="card_line"></div>
-                <p class="card_text">popisek produktu</p>
-              </div>
-              <div class="card_bottom">
-                <div class="sklad">Objem: 100ml</div>
-                <div class="sklad">Na sklade: 3 ks</div>
-                <div class="card_footer">
-                  <span class="price">200 Kč</span>
-                  <img class="card_cart" src="./img/cart.svg" alt="cart" />
-                </div>
+        <div id="product_cards" class="shop_conteiner product-cards-container">
+          <script>
+            async function loadProductCards() {
+              try {
+                // Получаем список продуктов с сервера
+                const response = await fetch(
+                  "http://localhost:3000/api/products"
+                );
+                const products = await response.json();
+
+                const productCardsContainer =
+                  document.getElementById("product_cards");
+                productCardsContainer.innerHTML = ""; // Очищаем контейнер перед добавлением карточек
+
+                products.forEach((product) => {
+                  // Создаем карточку продукта
+                  const card = document.createElement("div");
+                  card.className = "card";
+
+                  // Вставляем изображение продукта или заглушку
+                  const imageSrc = product.image
+                    ? `http://localhost:3000/${product.image}`
+                    : "./img/slider_img/1.jpeg";
+                  const image = `<img src="${imageSrc}" alt="${product.name}" class="card_img" />`;
+
+                  // Условие для отображения объема (если он указан)
+                  const volume = product.volume
+                    ? `<div class="sklad">Objem: ${product.volume} ml</div>`
+                    : "";
+
+                  // Добавляем остальные данные продукта в карточку
+                  card.innerHTML = `
+          ${image}
+          <div class="card_content">
+            <div class="card_top">
+              <h3 class="card_title">${product.name}</h3>
+              <div class="card_line"></div>
+              <p class="card_text">${product.description}</p>
+            </div>
+            <div class="card_bottom">
+              ${volume}
+              <div class="sklad">Na sklade: ${product.stock} ks</div>
+              <div class="card_footer">
+                <span class="price">${product.price} Kč</span>
+                <img class="card_cart" src="./img/cart.svg" alt="cart" />
               </div>
             </div>
           </div>
-          <!-- ----card end----- -->
-          <!-- card start -->
-          <div class="card">
-            <img src="./img/slider_img/1.jpeg" alt="" class="card_img" />
-            <div class="card_content">
-              <div class="card_top">
-                <h3 class="card_title">Nazev produktu</h3>
-                <div class="card_line"></div>
-                <p class="card_text">popisek produktu</p>
-              </div>
-              <div class="card_bottom">
-                <div class="sklad">Objem: 80ml</div>
-                <div class="sklad">Na sklade: 3 ks</div>
-                <div class="card_footer">
-                  <span class="price">200 Kč</span>
-                  <img class="card_cart" src="./img/cart.svg" alt="cart" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ----card end----- -->
-          <!-- card start -->
-          <div class="card">
-            <img src="./img/slider_img/1.jpeg" alt="" class="card_img" />
-            <div class="card_content">
-              <div class="card_top">
-                <h3 class="card_title">Nazev produktu</h3>
-                <div class="card_line"></div>
-                <p class="card_text">popisek produktu</p>
-              </div>
-              <div class="card_bottom">
-                <div class="sklad">Objem: 100ml</div>
-                <div class="sklad">Na sklade: 3 ks</div>
-                <div class="card_footer">
-                  <span class="price">200 Kč</span>
-                  <img class="card_cart" src="./img/cart.svg" alt="cart" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ----card end----- -->
-          <!-- card start -->
-          <div class="card">
-            <img src="./img/slider_img/1.jpeg" alt="" class="card_img" />
-            <div class="card_content">
-              <div class="card_top">
-                <h3 class="card_title">Nazev produktu</h3>
-                <div class="card_line"></div>
-                <p class="card_text">popisek produktu</p>
-              </div>
-              <div class="card_bottom">
-                <div class="sklad">Objem: 100ml</div>
-                <div class="sklad">Na sklade: 3 ks</div>
-                <div class="card_footer">
-                  <span class="price">200 Kč</span>
-                  <img class="card_cart" src="./img/cart.svg" alt="cart" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ----card end----- -->
-          <!-- card start -->
-          <div class="card">
-            <img src="./img/slider_img/1.jpeg" alt="" class="card_img" />
-            <div class="card_content">
-              <div class="card_top">
-                <h3 class="card_title">Nazev produktu</h3>
-                <div class="card_line"></div>
-                <p class="card_text">popisek produktu</p>
-              </div>
-              <div class="card_bottom">
-                <div class="sklad">Objem: 100ml</div>
-                <div class="sklad">Na sklade: 3 ks</div>
-                <div class="card_footer">
-                  <span class="price">200 Kč</span>
-                  <img class="card_cart" src="./img/cart.svg" alt="cart" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ----card end----- -->
-          <!-- card start -->
-          <div class="card">
-            <img src="./img/slider_img/1.jpeg" alt="" class="card_img" />
-            <div class="card_content">
-              <div class="card_top">
-                <h3 class="card_title">Nazev produktu</h3>
-                <div class="card_line"></div>
-                <p class="card_text">popisek produktu</p>
-              </div>
-              <div class="card_bottom">
-                <div class="sklad">Objem: 100ml</div>
-                <div class="sklad">Na sklade: 3 ks</div>
-                <div class="card_footer">
-                  <span class="price">200 Kč</span>
-                  <img class="card_cart" src="./img/cart.svg" alt="cart" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ----card end----- -->
-          <!-- card start -->
-          <div class="card">
-            <img src="./img/slider_img/1.jpeg" alt="" class="card_img" />
-            <div class="card_content">
-              <div class="card_top">
-                <h3 class="card_title">Nazev produktu</h3>
-                <div class="card_line"></div>
-                <p class="card_text">popisek produktu</p>
-              </div>
-              <div class="card_bottom">
-                <div class="sklad">Objem: 80ml</div>
-                <div class="sklad">Na sklade: 3 ks</div>
-                <div class="card_footer">
-                  <span class="price">200 Kč</span>
-                  <img class="card_cart" src="./img/cart.svg" alt="cart" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ----card end----- -->
-          <!-- card start -->
-          <div class="card">
-            <img src="./img/slider_img/1.jpeg" alt="" class="card_img" />
-            <div class="card_content">
-              <div class="card_top">
-                <h3 class="card_title">Nazev produktu</h3>
-                <div class="card_line"></div>
-                <p class="card_text">popisek produktu</p>
-              </div>
-              <div class="card_bottom">
-                <div class="sklad">Objem: 100ml</div>
-                <div class="sklad">Na sklade: 3 ks</div>
-                <div class="card_footer">
-                  <span class="price">200 Kč</span>
-                  <img class="card_cart" src="./img/cart.svg" alt="cart" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ----card end----- -->
+        `;
+
+                  // Добавляем карточку в контейнер
+                  productCardsContainer.appendChild(card);
+                });
+              } catch (error) {
+                console.error("Ошибка при загрузке продуктов:", error);
+              }
+            }
+
+            // Загружаем карточки при загрузке страницы
+            document.addEventListener("DOMContentLoaded", loadProductCards);
+          </script>
         </div>
       </div>
     </main>

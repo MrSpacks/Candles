@@ -1,14 +1,14 @@
 const express = require("express");
 const cors = require("cors");
-const sqlite3 = require("sqlite3").verbose();
 const multer = require("multer");
 const path = require("path");
-
 const app = express();
 const port = 3000;
+const sqlite3 = require("sqlite3").verbose();
 
 // Используем CORS middleware
 app.use(cors());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Middleware для обработки JSON
 app.use(express.json());
@@ -42,7 +42,8 @@ db.run(`
 // Маршрут для добавления нового продукта
 app.post("/api/products", upload.single("image"), (req, res) => {
   const { name, description, volume, price, stock, active } = req.body;
-  const imagePath = req.file ? req.file.path : null;
+  // Сохраняем полный путь к файлу, включая папку
+  const imagePath = req.file ? `uploads/${req.file.filename}` : null;
 
   const query = `
     INSERT INTO products (name, description, volume, price, stock, active, image) 
