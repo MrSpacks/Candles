@@ -18,7 +18,7 @@
             <a href="./blog.html" class="nav_item">Blog</a>
             <a href="./contact.html" class="nav_item">Kontakty</a>
           </nav>
-          <a href="#" class="header_cart"
+          <a href="./cart.html" class="header_cart"
             >Košik<img class="cart_img" src="./img/cart.svg" alt="cart"
           /></a>
         </div>
@@ -54,68 +54,10 @@
       <div class="line"></div>
       <!-- shop -->
       <div class="container">
-        <div id="product_cards" class="shop_conteiner product-cards-container">
-          <script>
-            async function loadProductCards() {
-              try {
-                // Получаем список продуктов с сервера
-                const response = await fetch(
-                  "http://localhost:3000/api/products"
-                );
-                const products = await response.json();
-
-                const productCardsContainer =
-                  document.getElementById("product_cards");
-                productCardsContainer.innerHTML = ""; // Очищаем контейнер перед добавлением карточек
-
-                products.forEach((product) => {
-                  // Создаем карточку продукта
-                  const card = document.createElement("div");
-                  card.className = "card";
-
-                  // Вставляем изображение продукта или заглушку
-                  const imageSrc = product.image
-                    ? `http://localhost:3000/${product.image}`
-                    : "./img/slider_img/1.jpeg";
-                  const image = `<img src="${imageSrc}" alt="${product.name}" class="card_img" />`;
-
-                  // Условие для отображения объема (если он указан)
-                  const volume = product.volume
-                    ? `<div class="sklad">Objem: ${product.volume} ml</div>`
-                    : "";
-
-                  // Добавляем остальные данные продукта в карточку
-                  card.innerHTML = `
-          ${image}
-          <div class="card_content">
-            <div class="card_top">
-              <h3 class="card_title">${product.name}</h3>
-              <div class="card_line"></div>
-              <p class="card_text">${product.description}</p>
-            </div>
-            <div class="card_bottom">
-              ${volume}
-              <div class="sklad">Na sklade: ${product.stock} ks</div>
-              <div class="card_footer">
-                <span class="price">${product.price} Kč</span>
-                <div class="card_plus">+ <img class="card_cart" src="./img/cart.svg" alt="cart" /></div>
-              </div>
-            </div>
-          </div>
-        `;
-
-                  // Добавляем карточку в контейнер
-                  productCardsContainer.appendChild(card);
-                });
-              } catch (error) {
-                console.error("Ошибка при загрузке продуктов:", error);
-              }
-            }
-
-            // Загружаем карточки при загрузке страницы
-            document.addEventListener("DOMContentLoaded", loadProductCards);
-          </script>
-        </div>
+        <div
+          id="product_cards"
+          class="shop_conteiner product-cards-container"
+        ></div>
       </div>
     </main>
     <footer>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Корзина</title>
+  </head>
+  <body>
+    <h1>Корзина</h1>
+    <div id="cart-items"></div>
+    <h2>Общая стоимость: <span id="total-price">0 Kč</span></h2>
+
+    <script>
+      function loadCart() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const cartItemsContainer = document.getElementById("cart-items");
+        const totalPriceElement = document.getElementById("total-price");
+
+        cartItemsContainer.innerHTML = ""; // Очищаем контейнер
+        let totalPrice = 0;
+
+        cart.forEach((product, index) => {
+          // Рассчитываем стоимость для текущего продукта
+          const productTotal = product.price * product.quantity;
+          totalPrice += productTotal;
+
+          // Создаем HTML для каждого продукта
+          const productDiv = document.createElement("div");
+          productDiv.className = "cart-item";
+          productDiv.innerHTML = `
+          <h3>${product.name}</h3>
+          <p>Цена: ${product.price} Kč</p>
+          <div class="quantity-control">
+            <button onclick="decreaseQuantity(${index})">-</button>
+            <span>${product.quantity}</span>
+            <button onclick="increaseQuantity(${index})">+</button>
+          </div>
+          <p>Итого: ${productTotal} Kč</p>
+          <button onclick="removeFromCart(${index})">Удалить</button>
+        `;
+          cartItemsContainer.appendChild(productDiv);
+        });
+
+        // Обновляем общую стоимость
+        totalPriceElement.textContent = `${totalPrice} Kč`;
+      }
+
+      function increaseQuantity(index) {
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        cart[index].quantity += 1;
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadCart();
+      }
+
+      function decreaseQuantity(index) {
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        if (cart[index].quantity > 1) {
+          cart[index].quantity -= 1;
+        } else {
+          cart.splice(index, 1); // Удаляем продукт, если количество равно 1
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadCart();
+      }
+
+      function removeFromCart(index) {
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadCart();
+      }
+
+      // Загружаем корзину при загрузке страницы
+      document.addEventListener("DOMContentLoaded", loadCart);
+    </script>
+  </body>
+</html>
