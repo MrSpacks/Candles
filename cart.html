@@ -3,12 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Корзина</title>
+    <title>Candles of your life</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Корзина</h1>
-    <div id="cart-items"></div>
-    <h2>Общая стоимость: <span id="total-price">0 Kč</span></h2>
+    <!-- header -->
+    <header>
+      <div class="container">
+        <div class="header_cont">
+          <img class="logo" src="./img/Logo.svg" alt="Logo" />
+          <nav class="nav_items">
+            <a href="./index.html" class="nav_item">Obchod</a>
+            <a href="./about.html" class="nav_item">O nas</a>
+            <a href="./blog.html" class="nav_item">Blog</a>
+            <a href="./contact.html" class="nav_item">Kontakty</a>
+          </nav>
+          <a href="./cart.html" class="header_cart"
+            >Košik<img class="cart_img" src="./img/cart.svg" alt="cart"
+          /></a>
+        </div>
+      </div>
+      <div class="line"></div>
+    </header>
+
+    <main>
+      <div class="container">
+        <h1>Košik</h1>
+        <div class="cart_content" id="cart-items"></div>
+        <h2>Общая стоимость: <span id="total-price">0 Kč</span></h2>
+      </div>
+    </main>
 
     <script>
       function loadCart() {
@@ -73,5 +97,12 @@
       // Загружаем корзину при загрузке страницы
       document.addEventListener("DOMContentLoaded", loadCart);
     </script>
+    <footer>
+      <div class="line"></div>
+      <div class="container">
+        <p class="footer_text">website by @mr.spacks 2024</p>
+      </div>
+    </footer>
+    <script src="./index.js"></script>
   </body>
 </html>

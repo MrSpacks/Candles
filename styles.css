@@ -23,19 +23,30 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  height: 100%;
+  flex: 1;
 }
 
 /*! header styles  */
-
+header {
+  background-color: rgba(255, 255, 255, 0.517);
+  position: sticky;
+  top: 0;
+}
 .header_cont {
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
   text-align: center;
   align-items: center;
   font-size: 24px;
 }
 .logo {
-  width: 100px;
+  width: 150px;
+  left: 100px;
+  top: 30px;
+  border-radius: 50%;
+  background-color: white;
+  position: absolute;
 }
 .nav_item {
   padding: 5px 15px;
@@ -160,6 +171,11 @@ body {
 
 /* footer stiles */
 
+footer {
+  background-color: rgba(255, 255, 255, 0.517);
+  position: sticky;
+  bottom: 0;
+}
 .footer_text {
   margin: 5px;
   font-size: 16px;
@@ -169,6 +185,26 @@ body {
 .blog_pdf {
   width: 100%;
   height: 65vh;
+}
+
+/* cart */
+.cart_content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  justify-content: space-around;
+}
+.quantity-control {
+  display: flex;
+  gap: 6px;
+}
+.cart-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  text-align: center;
+  justify-content: end;
 }
 /*! Adaptive */
 
