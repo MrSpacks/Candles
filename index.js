@@ -26,7 +26,11 @@ async function loadProductCards() {
     const productCardsContainer = document.getElementById("product_cards");
     productCardsContainer.innerHTML = ""; // Очищаем контейнер перед добавлением карточек
 
-    products.forEach((product) => {
+    // Фильтруем только активные продукты
+    const activeProducts = products.filter((product) => product.active === 1);
+
+    // Создаем карточки только для активных продуктов
+    activeProducts.forEach((product) => {
       // Создаем карточку продукта
       const card = document.createElement("div");
       card.className = "card";

@@ -58,7 +58,8 @@ header {
 .nav_item:hover {
   box-shadow: 5px 10px 30px rgba(0, 0, 0, 0.163);
 }
-.header_cart {
+.header_cart,
+.btn_cart {
   padding: 10px;
   border-radius: 10px;
   border: solid 1px black;
@@ -112,6 +113,7 @@ header {
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
+  margin-bottom: 100px;
 }
 .card {
   padding: 20px;
@@ -173,7 +175,8 @@ header {
 
 footer {
   background-color: rgba(255, 255, 255, 0.517);
-  position: sticky;
+  position: fixed;
+  width: 100%;
   bottom: 0;
 }
 .footer_text {
@@ -189,6 +192,7 @@ footer {
 
 /* cart */
 .cart_content {
+  padding: 50px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -198,14 +202,63 @@ footer {
 .quantity-control {
   display: flex;
   gap: 6px;
+  align-items: end;
 }
 .cart-item {
+  font-size: 24px;
   display: flex;
   gap: 20px;
   align-items: flex-end;
   text-align: center;
   justify-content: end;
 }
+
+.btn_quant {
+  font-size: 24px;
+  padding: 5px 8px;
+  border-radius: 10px;
+  background-color: white;
+  align-items: center;
+  text-align: center;
+  transition: 0.3s;
+}
+.btn_quant:hover {
+  box-shadow: 5px 10px 30px rgba(0, 0, 0, 0.163);
+  background-color: rgba(205, 30, 30, 0.5);
+}
+.minus,
+.plus {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  justify-content: center;
+}
+.plus:hover {
+  background-color: rgba(144, 238, 144, 0.5);
+}
+
+.cart_price {
+  align-items: center;
+  position: fixed;
+  bottom: 100px;
+  font-weight: 700;
+  font-size: 30px;
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+}
+.btn_cart {
+  background-color: white;
+  font-size: 30px;
+}
+.btn_cart:hover {
+  box-shadow: 5px 10px 30px rgba(0, 0, 0, 0.163);
+}
+
 /*! Adaptive */
 
 @media (min-width: 320px) and (max-width: 1024px) {

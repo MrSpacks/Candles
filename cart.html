@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cz">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,9 +28,17 @@
 
     <main>
       <div class="container">
-        <h1>Košik</h1>
+        <!-- <h1>Košik</h1> -->
         <div class="cart_content" id="cart-items"></div>
-        <h2>Общая стоимость: <span id="total-price">0 Kč</span></h2>
+        <div class="cart_price">
+          <div class="total_price">
+            <span>Celková cena:</span>
+            <span id="total-price">0 Kč</span>
+          </div>
+          <button class="btn_cart" popovertarget="my-popover">Objednat</button>
+
+          <div popover id="my-popover">Greetings, one and all!</div>
+        </div>
       </div>
     </main>
 
@@ -53,14 +61,14 @@
           productDiv.className = "cart-item";
           productDiv.innerHTML = `
           <h3>${product.name}</h3>
-          <p>Цена: ${product.price} Kč</p>
+          <p>Cena: ${product.price} Kč</p>
           <div class="quantity-control">
-            <button onclick="decreaseQuantity(${index})">-</button>
+            <button class="btn_quant minus" onclick="decreaseQuantity(${index})">-</button>
             <span>${product.quantity}</span>
-            <button onclick="increaseQuantity(${index})">+</button>
+            <button class="btn_quant plus" onclick="increaseQuantity(${index})">+</button>
           </div>
-          <p>Итого: ${productTotal} Kč</p>
-          <button onclick="removeFromCart(${index})">Удалить</button>
+          <p>Celková cena: ${productTotal} Kč</p>
+          <button class="btn_quant delete" onclick="removeFromCart(${index})">Smazat</button>
         `;
           cartItemsContainer.appendChild(productDiv);
         });
