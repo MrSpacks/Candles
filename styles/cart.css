@@ -1,0 +1,43 @@
+/* popover styles */
+#my-popover {
+  display: none; /* Скрываем поповер по умолчанию */
+}
+.cart_popover {
+  box-shadow: 10px 10px 30px black;
+  margin: 30px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  display: flex;
+  margin: auto;
+  width: 350px;
+}
+.form_popover {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.label_popover {
+  margin: 0;
+}
+.input_popover {
+  height: 25px;
+  border: none;
+  border-bottom: solid 1px gray;
+}
+.btn_popover {
+  font-size: 24px;
+  padding: 5px 8px;
+  border-radius: 10px;
+  background-color: white;
+  align-items: center;
+  text-align: center;
+  transition: 0.3s;
+  box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.163);
+}
+.btn_popover:hover {
+  box-shadow: 5px 10px 30px rgba(0, 0, 0, 0.163);
+  background-color: rgba(144, 238, 144, 0.5);
+}

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Candles of your life</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./styles/cart.css" />
   </head>
   <body>
     <!-- header -->
@@ -37,7 +38,75 @@
           </div>
           <button class="btn_cart" popovertarget="my-popover">Objednat</button>
 
-          <div popover id="my-popover">Greetings, one and all!</div>
+          <div class="cart_popover" popover id="my-popover">
+            <form class="form_popover" id="order-form">
+              <label class="label_popover" for="name">Jméno:</label>
+              <input
+                placeholder="Vaše jméno"
+                class="input_popover"
+                type="text"
+                id="name"
+                name="name"
+                required
+              />
+
+              <label class="label_popover" for="address"
+                >Ulice a číslo popisné:</label
+              >
+              <input
+                placeholder="Ulice a číslo popisné"
+                class="input_popover"
+                type="text"
+                id="address"
+                name="address"
+                required
+              />
+
+              <label class="label_popover" for="city">Město, stát:</label>
+              <input
+                placeholder="Město, stát"
+                class="input_popover"
+                type="text"
+                id="city"
+                name="city"
+                required
+              />
+
+              <label class="label_popover" for="postal-code">PSČ:</label>
+              <input
+                placeholder="PSČ"
+                class="input_popover"
+                type="text"
+                id="postal-code"
+                name="postal-code"
+                required
+              />
+
+              <label class="label_popover" for="phone">Telefon:</label>
+              <input
+                placeholder="Telefon"
+                class="input_popover"
+                type="tel"
+                id="phone"
+                name="phone"
+                required
+              />
+
+              <label class="label_popover" for="email">E-mail:</label>
+              <input
+                placeholder="E-mail"
+                class="input_popover"
+                type="email"
+                id="email"
+                name="email"
+                required
+              />
+
+              <button class="btn_popover" type="submit">
+                Odeslat objednávku
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </main>
@@ -57,24 +126,39 @@
           totalPrice += productTotal;
 
           // Создаем HTML для каждого продукта
+          const lineDiv = document.createElement("div");
           const productDiv = document.createElement("div");
+          lineDiv.className = "line";
           productDiv.className = "cart-item";
           productDiv.innerHTML = `
-          <h3>${product.name}</h3>
-          <p>Cena: ${product.price} Kč</p>
-          <div class="quantity-control">
-            <button class="btn_quant minus" onclick="decreaseQuantity(${index})">-</button>
-            <span>${product.quantity}</span>
-            <button class="btn_quant plus" onclick="increaseQuantity(${index})">+</button>
-          </div>
-          <p>Celková cena: ${productTotal} Kč</p>
-          <button class="btn_quant delete" onclick="removeFromCart(${index})">Smazat</button>
-        `;
+      <h3>${product.name}</h3>
+      <p>Cena: ${product.price} Kč</p>
+      <div class="quantity-control">
+        <button class="btn_quant minus" onclick="decreaseQuantity(${index})">-</button>
+        <span>${product.quantity}</span>
+        <button class="btn_quant plus" onclick="increaseQuantity(${index})">+</button>
+      </div>
+      <p>Celková cena: ${productTotal} Kč</p>
+      <button class="btn_quant delete" onclick="removeFromCart(${index})">Smazat</button>
+    `;
           cartItemsContainer.appendChild(productDiv);
+          cartItemsContainer.appendChild(lineDiv);
         });
 
-        // Обновляем общую стоимость
-        totalPriceElement.textContent = `${totalPrice} Kč`;
+        // Добавляем стоимость доставки
+        const deliveryFee = 89;
+        totalPrice += deliveryFee;
+
+        // Обновляем итоговую стоимость с учетом доставки
+        totalPriceElement.textContent = `${totalPrice} Kč`; // Обновляем текст с новой стоимостью
+
+        // Изменяем текст "Celková cena:" на "Cena s dopravou:"
+        const totalPriceLabel = document.querySelector(
+          ".total_price span:first-child"
+        );
+        if (totalPriceLabel) {
+          totalPriceLabel.textContent = "Cena s dopravou:";
+        }
       }
 
       function increaseQuantity(index) {
@@ -104,6 +188,67 @@
 
       // Загружаем корзину при загрузке страницы
       document.addEventListener("DOMContentLoaded", loadCart);
+      // popover cart send
+      document
+        .getElementById("order-form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const form = e.target;
+          const formData = {
+            name: form.name.value,
+            address: form.address.value,
+            city: form.city.value,
+            postalCode: form["postal-code"].value,
+            phone: form.phone.value,
+            email: form.email.value,
+            cart: JSON.parse(localStorage.getItem("cart")) || [], // Получаем данные корзины
+          };
+
+          try {
+            const response = await fetch(
+              "http://localhost:3000/api/send-order",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+              }
+            );
+
+            if (response.ok) {
+              alert("Objednávка byla úspěšně odeslána!");
+              localStorage.removeItem("cart"); // Очищаем корзину
+              loadCart(); // Обновляем интерфейс корзины
+
+              // Закрываем поповер
+              document.getElementById("my-popover").style.display = "none";
+            } else {
+              alert("Něco se pokazilo. Zkuste to znovu.");
+            }
+          } catch (error) {
+            console.error("Chyba:", error);
+            alert("Chyba při odesílání objednávky.");
+          }
+        });
+
+      // close popover
+      document.addEventListener("click", function (event) {
+        const popover = document.getElementById("my-popover");
+        const button = document.querySelector("[popovertarget='my-popover']");
+        // Проверяем, если клик был вне поповера и кнопки
+        if (!popover.contains(event.target) && !button.contains(event.target)) {
+          popover.style.display = "none";
+        }
+      });
+      // open popover
+      document
+        .querySelector("[popovertarget='my-popover']")
+        .addEventListener("click", function () {
+          const popover = document.getElementById("my-popover");
+          popover.style.display = "block";
+        });
     </script>
     <footer>
       <div class="line"></div>

@@ -104,3 +104,58 @@ app.patch("/api/products/:id", (req, res) => {
 app.listen(port, () => {
   console.log(`Сервер запущен на http://localhost:${port}`);
 });
+
+const nodemailer = require("nodemailer");
+
+app.post("/api/send-order", async (req, res) => {
+  const { name, address, city, postalCode, phone, email, cart } = req.body;
+
+  const cartItems = cart
+    .map(
+      (item) =>
+        `- ${item.name}, množství: ${item.quantity}, cena za kus: ${item.price} Kč`
+    )
+    .join("\n");
+
+  const message = `
+    Objednávka od zákazníka:
+    Jméno: ${name}
+    Adresa: ${address}
+    Město, stát: ${city}
+    PSČ: ${postalCode}
+    Telefon: ${phone}
+    Email: ${email}
+
+    Obsah košíku:
+    ${cartItems}
+
+    Celková cena: ${cart.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    )} Kč
+  `;
+
+  try {
+    // Настройка почтового клиента
+    const transporter = nodemailer.createTransport({
+      service: "gmail", // Или другой почтовый сервис
+      auth: {
+        user: "web.mr.spacks@gmail.com", // Замените на ваш email
+        pass: "89527532341Praha", // Замените на ваш пароль (или приложение пароль)
+      },
+    });
+
+    // Отправка email
+    await transporter.sendMail({
+      from: "web.mr.spacks@gmail.com", // Замените на ваш email
+      to: "web.mr.spacks@gmail.com", // Замените на ваш email
+      subject: "Nová objednávka",
+      text: message,
+    });
+
+    res.status(200).send("Objednávka byla úspěšně odeslána.");
+  } catch (error) {
+    console.error("Chyba při odesílání emailu:", error);
+    res.status(500).send("Chyba při odesílání emailu.");
+  }
+});

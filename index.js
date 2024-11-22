@@ -84,7 +84,7 @@ async function loadProductCards() {
       productCardsContainer.appendChild(card);
     });
   } catch (error) {
-    console.error("Ошибка при загрузке продуктов:", error);
+    console.error("Neco se pokazilo: ", error);
   }
 }
 
@@ -100,7 +100,7 @@ function addToCart(product) {
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Продукт добавлен в корзину!");
+  alert("Přidano do košiku");
 }
 
 // Загружаем карточки при загрузке страницы
@@ -126,7 +126,7 @@ function addToCart(product) {
 
   // Сохраняем обновленную корзину в localStorage
   localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Продукт добавлен в корзину!");
+  alert("Přidano do košiku");
 }
 
 // Пример привязки функции к кнопке в карточке продукта
